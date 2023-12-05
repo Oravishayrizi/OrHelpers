@@ -8,8 +8,6 @@
 #' @details The function install packages from CRAN repository. Other repositories including Github does not supported.
 #' @references Based on <https://statsandr.com/blog/an-efficient-way-to-install-and-load-r-packages/>.
 #' @export
-#' @examples
-#' package_installer(c("ggplot2","data.table"))
 package_installer<-function(packages){
     not_installed <- !packages %in% installed.packages()
     if (any(not_installed)) install.packages(packages[not_installed])

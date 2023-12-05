@@ -7,6 +7,8 @@
 scale_color_palette(index = NULL, ...)
 }
 \arguments{
+\item{...}{Additional arguments passed to \code{scale_color_manual}. Mainly names and labels (see example).}
+
 \item{col_order}{if col_order is NULL (the default), the function uses the color by the default order, col_order argument is used to override this behavior.}
 }
 \description{
@@ -16,6 +18,7 @@ This is a wrapper function for the scale_color_manual function. It uses pre defi
 This function is heavily inspired by ggplot's \code{scale_fill_brewer} function. The palette includes the follwoing colors: 1 - Blue ; 2 - Vermilion ; 3 - Bluish Green ; 4 - Orange ; 5 - Sky Blue ; 6 - Yellow ; 7 - Reddish Purple ; 8 - Grey.
 }
 \examples{
+library(ggplot2)
 bp <- ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length,color = Species)) +
 geom_point(size=5) +
 theme_minimal() +

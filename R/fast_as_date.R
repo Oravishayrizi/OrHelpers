@@ -3,6 +3,7 @@
 #' This function coverts a character or factor vector into a vector of dates.
 #'
 #' @param x a vector to be converted into date.
+#' @param ... Additional arguments passed to `as.Date.character`.
 #' @return A vector of Dates
 #' @export
 #' @references Based on <https://towardsdatascience.com/tricks-in-r-to-boost-your-productivity-8c977242c69c>

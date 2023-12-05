@@ -7,6 +7,8 @@
 scale_fill_palette(index = NULL, ...)
 }
 \arguments{
+\item{...}{Additional arguments passed to \code{scale_fill_manual}. Mainly names and labels (see example).}
+
 \item{col_order}{if col_order is NULL (the default), the function uses the color by the default order, col_order argument is used to override this behavior.}
 }
 \description{
@@ -17,6 +19,7 @@ This function is heavily inspired by ggplot's \code{scale_fill_brewer} function.
 }
 \examples{
 scale_fill_palette()
+library(ggplot2)
 bp <- ggplot(iris, aes(Species, Sepal.Length)) +
 geom_boxplot(aes(fill = Species)) +
 theme_minimal() +

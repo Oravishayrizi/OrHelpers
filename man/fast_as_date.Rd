@@ -8,6 +8,8 @@ fast_as_date(x, ...)
 }
 \arguments{
 \item{x}{a vector to be converted into date.}
+
+\item{...}{Additional arguments passed to \code{as.Date.character}.}
 }
 \value{
 A vector of Dates

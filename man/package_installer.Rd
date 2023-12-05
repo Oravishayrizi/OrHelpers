@@ -19,9 +19,6 @@ Then, it loads all the packages.
 \details{
 The function install packages from CRAN repository. Other repositories including Github does not supported.
 }
-\examples{
-package_installer(c("ggplot2","data.table"))
-}
 \references{
 Based on \url{https://statsandr.com/blog/an-efficient-way-to-install-and-load-r-packages/}.
 }
