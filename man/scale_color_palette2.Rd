@@ -2,31 +2,37 @@
 % Please edit documentation in R/scale_color_palette2.R
 \name{scale_color_palette2}
 \alias{scale_color_palette2}
-\title{wrapper for scale_color_manual function}
+\title{Color Scale for Colorblind-Friendly Palette}
 \usage{
 scale_color_palette2(index = NULL, ...)
 }
 \arguments{
-\item{...}{Additional arguments passed to \code{scale_color_manual}. Mainly names and labels (see example).}
+\item{index}{A numeric vector specifying the indices of colors to use from the predefined alternative palette. Values must be between 1 and 8. If NULL (the default), all colors are used.}
 
-\item{col_order}{if col_order is NULL (the default), the function uses the color by the default order, col_order argument is used to override this behavior.}
+\item{...}{Additional arguments passed to \code{scale_color_manual} or \code{scale_fill_manual}, such as \code{name} for legend title, or \code{labels} for legend labels.}
 }
 \description{
-This is a wrapper function for the scale_color_manual function. It uses pre defined a colorblind-friendly palette
+This function applies a predefined colorblind-friendly palette to color aesthetics in \code{ggplot2} plots. You can select specific colors from the palette by specifying the \code{index} parameter.
+
+The default palette includes the following colors:
+1 - Navy Blue, 2 - Crimson, 3 - Forest Green, 4 - Gold, 5 - Coral, 6 - Lavender, 7 - Teal, 8 - Dark Grey.
 }
 \details{
-This function is heavily inspired by ggplot's \code{scale_fill_brewer} function. The palette includes the follwoing colors: 1 - Blue ; 2 - Red ; 3 - Black ; 4 - Orange ; 5 - Sky Blue ; 6 - Yellow ; 7 - Reddish Purple ; 8 - Teal Green ; 9 - Grey.
+\code{scale_color_palette} provides a color scale that uses a colorblind-friendly palette, wrapping the \code{scale_color_manual} function.
+
+The functions use an alternative predefined color palette specifically designed to be distinguishable for colorblind users.
 }
 \examples{
 library(ggplot2)
-bp <- ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length,color = Species)) +
-geom_point(size=5) +
-theme_minimal() +
-theme(legend.position = "top")
-bp # Regular colors by ggplot2
+bp <- ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
+  geom_point(size = 5)
 bp + scale_color_palette2()
-bp + scale_color_palette2(index = c(4,5,7),labels=c("A","B","C"),name = "New Legend Title")
+
+bp + scale_color_palette2(index = c(4, 5, 7),
+ labels = c("A", "B", "C"),
+  name = "New Legend Title")
+
 }
 \references{
-Based on \url{https://davidmathlogic.com/colorblind/#\%230065A7-\%23961d24-\%23000000-\%23E69F00-\%2356B4E9-\%23CC79A7-\%23009988-\%23BBBBBB}, \url{https://personal.sron.nl/~pault/}, and \url{https://paulgp.github.io/beamer_tips.pdf}
+Based on \url{https://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette} and \url{https://paulgp.github.io/beamer_tips.pdf}.
 }

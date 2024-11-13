@@ -9,7 +9,7 @@
 #' @references Based on <https://statsandr.com/blog/an-efficient-way-to-install-and-load-r-packages/>.
 #' @export
 package_installer<-function(packages){
-    not_installed <- !packages %in% installed.packages()
-    if (any(not_installed)) install.packages(packages[not_installed])
+    not_installed <- !packages %in% utils::installed.packages()
+    if (any(not_installed)) utils::install.packages(packages[not_installed])
     invisible(lapply(packages,require,character.only=TRUE))
 }

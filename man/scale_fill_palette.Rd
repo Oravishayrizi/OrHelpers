@@ -2,32 +2,38 @@
 % Please edit documentation in R/scale_fill_palette.R
 \name{scale_fill_palette}
 \alias{scale_fill_palette}
-\title{wrapper for scale_fill_manual function}
+\title{Fill Scale for Colorblind-Friendly Palette}
 \usage{
 scale_fill_palette(index = NULL, ...)
 }
 \arguments{
-\item{...}{Additional arguments passed to \code{scale_fill_manual}. Mainly names and labels (see example).}
+\item{index}{A numeric vector specifying the indices of colors to use from the predefined palette. Values must be between 1 and 8. If NULL (the default), all colors are used.}
 
-\item{col_order}{if col_order is NULL (the default), the function uses the color by the default order, col_order argument is used to override this behavior.}
+\item{...}{Additional arguments passed to \code{scale_fill_manual}, such as \code{name} for legend title, or \code{labels} for legend labels.}
+}
+\value{
+A ggplot2 fill scale function with the colorblind-friendly palette.
 }
 \description{
-This is a wrapper function for the scale_fill_manual function. It uses pre defined a colorblind-friendly palette
+This function applies a predefined colorblind-friendly palette to fill aesthetics in \code{ggplot2} plots. You can select specific colors from the palette by specifying the \code{index} parameter.
+
+The default palette includes the following colors:
+1 - Blue, 2 - Vermilion, 3 - Bluish Green, 4 - Orange, 5 - Sky Blue, 6 - Yellow, 7 - Reddish Purple, 8 - Grey.
 }
 \details{
-This function is heavily inspired by ggplot's \code{scale_fill_brewer} function. The palette includes the follwoing colors: 1 - Blue ; 2 - Vermilion ; 3 - Bluish Green ; 4 - Orange ; 5 - Sky Blue ; 6 - Yellow ; 7 - Reddish Purple ; 8 - Grey.
+\code{scale_fill_palette} provides a fill scale that uses a colorblind-friendly palette, wrapping the \code{scale_fill_manual} function.
 }
 \examples{
-scale_fill_palette()
 library(ggplot2)
-bp <- ggplot(iris, aes(Species, Sepal.Length)) +
-geom_boxplot(aes(fill = Species)) +
-theme_minimal() +
-theme(legend.position = "top")
-bp # Regular colors by ggplot2
-bp + scale_fill_palette()
-bp + scale_fill_palette(index = c(2,5,3),labels=c("A","B","C"),name = "New Legend Title")
+bp_fill <- ggplot(iris, aes(x = Sepal.Width, fill = Species)) +
+  geom_bar()
+bp_fill + scale_fill_palette()
+
+bp_fill + scale_fill_palette(index = c(3, 5, 1),
+ labels = c("Species A", "Species B", "Species C"),
+  name = "Iris Species")
+
 }
 \references{
-Based on \url{https://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette}, and \url{https://paulgp.github.io/beamer_tips.pdf}
+Based on \url{https://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette} and \url{https://paulgp.github.io/beamer_tips.pdf}.
 }
