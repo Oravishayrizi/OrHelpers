@@ -2,7 +2,6 @@
 #'
 #' This function `orar_theme` allows for advanced customization of ggplot2 plot themes,
 #' including options for legend position, background, direction, and more.
-#'
 #' @param legend_position A string specifying the position of the legend. Can be one of "bottom",
 #' "top", "left", "right", or corner positions like "topleft", "topright", "bottomleft", "bottomright".
 #' @param legend_bg A string specifying the background color of the legend box. "transparent" is the default.
@@ -39,67 +38,85 @@
 #'                legend_bg = "lightblue",
 #'                grid = "y")
 #'
-
 orar_theme<-function(legend_position="bottom",
-                            legend_bg="transparent",
-                            legend_direction = "horizontal",grid="all",
-                            plot_ratio=1.5,panel_aspect_ratio=NULL,
-                            distance_from_edge=0.05,base_family = "sans",base_size = 20,...){
-        half_line <- base_size/2
+                     legend_bg="transparent",
+                     legend_direction = "horizontal",grid="all",
+                     plot_ratio=1.5,panel_aspect_ratio=NULL,
+                     distance_from_edge=0.05,base_family = "sans",base_size = 20,...){
 
-        inner_positions<-c("topleft","topright","bottomleft","bottomright")
-        legend_justification<-c("center")
-        if (legend_position %in% inner_positions) {
+    half_line <- base_size/2
 
-            align_v<-ifelse(grepl(pattern ="top",x=legend_position,ignore.case = TRUE),"top","bottom")
-            align_h<-ifelse(grepl(pattern ="right",x=legend_position,ignore.case = TRUE),"right","left")
-            legend_justification = c(align_h, align_v)
+    inner_positions<-c("topleft","topright","bottomleft","bottomright")
 
-            y<-as.numeric(grepl(pattern ="top" ,x=legend_position,ignore.case = TRUE))
-            leg_y=abs(y-distance_from_edge)
-            x<-as.numeric(grepl(pattern ="right" ,x=legend_position,ignore.case = TRUE))
-            leg_x=abs(x-distance_from_edge/plot_ratio)
-            legend_position<-c(leg_x,leg_y)
-        }
-        require(ggplot2)
-        theme_result<-theme_classic(base_size,...)+
-            theme(
-                panel.grid.major = element_line(colour = "grey92"),
-                #Transparent Objects
-                panel.background = element_rect(fill = "transparent", color = NA), # bg of the panel
-                plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    theme_result<-ggplot2::theme_classic(base_size,...)+
+        ggplot2::theme(
+            panel.grid.major = ggplot2::element_line(colour = "grey92"),
+            #Transparent Objects
+            panel.background = ggplot2::element_rect(fill = "transparent", color = NA), # panel bg
+            plot.background = ggplot2::element_rect(fill = "transparent", color = NA), # plot bg
 
-                #legend
-                legend.background = element_rect(fill = "transparent"), # get rid of legend bg
-                legend.box.background = element_rect(fill = legend_bg,colour=NA), # get rid of legend panel bg
-                legend.key = element_rect(fill = "transparent", colour = NA), # get rid of key legend fill, and of the surrounding
+            #legend
+            legend.background = ggplot2::element_rect(fill = "transparent"), # get rid of legend bg
+            legend.box.background = ggplot2::element_rect(fill = legend_bg,colour=NA), # get rid of legend panel bg
+            legend.key = ggplot2::element_rect(fill = "transparent", colour = NA), # get rid of key legend fill, and of the surrounding
+
+            legend.direction = legend_direction,
+
+            #margins
+            plot.margin= ggplot2::margin(half_line*2, half_line*2, half_line,half_line),
+            aspect.ratio = panel_aspect_ratio,
+
+            # Caption
+            plot.caption = ggplot2::element_text(hjust = 0, size = base_size*0.67),
+
+            plot.title = ggplot2::element_text(hjust =0, face = "bold")
+
+        )
 
 
-                legend.position = legend_position, legend.justification = legend_justification, legend.direction = legend_direction,
+    if (legend_position %in% inner_positions) {
+        # Determine the justification and legend position coordinates based on corner specification
+        align_v <- ifelse(grepl("top", legend_position, ignore.case = TRUE), 1, 0)
+        align_h <- ifelse(grepl("right", legend_position, ignore.case = TRUE), 1, 0)
 
-                #margins
-                plot.margin= margin(half_line*2, half_line*2, half_line,half_line),#unit(c(1,1,0.5,0.5),"cm"),
-                aspect.ratio = panel_aspect_ratio,
+        # Set legend justification
+        legend_justification <- c(align_h, align_v)
 
-                # Caption
-                plot.caption = element_text(hjust = 0, size = base_size*0.67),
+        # Set the legend position coordinates based on corner and distance from edge
+        leg_y <- abs(align_v - distance_from_edge)
+        leg_x <- abs(align_h - distance_from_edge / plot_ratio)
+        legend_position <- c(leg_x, leg_y)
 
-                plot.title = element_text(hjust =0, face = "bold")
+        # Apply to theme
+        theme_result <- theme_result + ggplot2::theme(
+            legend.position = "inside",
+            legend.position.inside = legend_position,
+            legend.justification = legend_justification
+        )
 
-            )
-        if (grid == "none") {
-            theme_result <- theme_result +
-                theme(panel.grid.major = element_blank())
-        } else if (grid == "x") {
-            theme_result <- theme_result +
-                theme(panel.grid.major.x = element_blank())
-        } else if (grid == "y") {
-            theme_result <- theme_result +
-                theme(panel.grid.major.y = element_blank())
-        }
-        if (!grid %in%  c("all","x","y","none")) {
-            warning("grid must be one of all, x, y, None")
-        }
-        return(theme_result)
+    } else {
+        # For non-corner positions, keep default justification as "center"
+        theme_result <- theme_result + ggplot2::theme(
+            legend.position = legend_position,
+            legend.justification = "center"
+        )
     }
+
+    if (grid == "none") {
+        theme_result <- theme_result +
+            ggplot2::theme(panel.grid.major = ggplot2::element_blank())
+    } else if (grid == "x") {
+        theme_result <- theme_result +
+            ggplot2::theme(panel.grid.major.x = ggplot2::element_blank())
+    } else if (grid == "y") {
+        theme_result <- theme_result +
+            ggplot2::theme(panel.grid.major.y = ggplot2::element_blank())
+    }
+
+    if (!grid %in%  c("all","x","y","none")) {
+        warning("grid must be one of 'all', 'x', 'y', 'none'")
+    }
+
+    return(theme_result)
+}
 
