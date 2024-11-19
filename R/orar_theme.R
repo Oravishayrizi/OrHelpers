@@ -98,7 +98,7 @@ orar_theme<-function(legend_position="bottom",
                 theme(panel.grid.major.y = element_blank())
         }
         if (!grid %in%  c("all","x","y","none")) {
-            ware("grid must be one of all, x, y, None")
+            warning("grid must be one of all, x, y, None")
         }
         return(theme_result)
     }
